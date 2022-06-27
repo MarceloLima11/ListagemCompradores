@@ -1,0 +1,136 @@
+﻿@model ListagemCompradores.Filter.FiltroModel
+
+@{
+    ViewData["Title"] = "Clientes";
+    ViewData["Developer"] = "MarceloLima11";
+}
+
+@{
+
+   ListagemCompradores.Pagination.PaginationModel clientes = ViewData["Clientes"] as ListagemCompradores.Pagination.PaginationModel;
+}
+
+<div>
+    <h1>@ViewData["Title"]</h1>
+    <h4>Consulte os seus clientes cadastrados na sua loja ou realize o cadastro de novos clientes<a
+            asp-action="Registrar" class="btn btn-success" style="margin-right:5px">Adicionar Cliente</a></h4>
+</div>
+
+<hr />
+
+
+<form asp-controller="Cliente" asp-action="Filtrar" method="get" class="form-inline">   
+    <link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <div class="form-group">
+        <div class="col-md-4 col-sm-4 col-xs-4">
+        <label style="white-space:nowrap" for="inputEmail4">Nome/Razão Social:</label>
+        <input asp-for="Nomee" class="form-control" placeholder="Nome/Razão Social">
+        </div>
+    
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <label style="white-space:nowrap" for="inputEmail4">Email:
+
+          </label><input asp-for="Emaill" class="form-control" placeholder="Email">
+        </div>
+    
+        <div class="col-md-4 col-sm-4 col-xs-4">
+          <label style="white-space:nowrap" for="number">Telefone:</label>
+          <input asp-for="Telefonee" class="form-control" onkeypress="mascara(this, telefone)" maxlength="15" placeholder="(__) _____-____">
+        </div>
+    
+        <div class="col-md-4 col-sm-4 col-xs-4" style=" margin-top:5px">
+          <label style="white-space:nowrap" for="datebirth">Data de Cadastro:</label>
+          <input asp-for="DataCadastroo" type="date" class="form-control">
+        </div>
+    
+        <div class="col-md-4 col-sm-4 col-xs-4" style=" margin-top:5px">
+         <label style="white-space:nowrap" for="person">Bloqueado:</label>
+         <select class="form-control" asp-for="Bloqueadoo">
+            <option value=true>Sim</option>
+            <option value=false>Não</option>
+         </select>
+      </div>
+  
+      <div class="col-md-4 col-sm-4 col-xs-4" style=" margin-top:5px;display:flex;justify-content: flex-end;">
+            <label style="white-space:nowrap" for="person"></label>
+            <button id="submit" type="submit" class="btn btn-primary" style="margin-right:5px;">Filtrar</button>
+            <label style="white-space:nowrap" for="person"></label>
+            <a class="btn btn-primary text" asp-controller="Cliente" asp-action="LimparFiltros" style="float:right;margin-right:90px;"> Limpar Filtros</a>
+      </div>
+  </div>
+</form>
+
+<br />
+
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Data Cadastro</th>
+        <th>Bloqueado</th>
+        <th><input name="select_all" type="checkbox" onclick="toggle(this)"></th>
+        <th>Ações</th>
+    </tr>
+    @if(clientes.Data.Count > 0)
+    {
+        @foreach (var cliente in clientes.Data)
+        {
+            <tr>
+                <td>@cliente.Nome</td>
+                <td>@cliente.Email</td>
+                <td>@cliente.Telefone</td>
+                <td>@cliente.DataCadastro</td>
+                <td>@cliente.Bloqueado</td>
+                <td><input type="checkbox" name="ck" onclick="toggle(this)" /></td>
+                <td><a class="btn btn-primary text" asp-controller="Cliente" asp-action="Editar" asp-route-id="@cliente.Id" >Editar</a></td>
+            </tr>
+        }
+    }
+    @if (clientes.Data.Count == 0)
+    {
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    }
+</table>
+
+<div>
+    <ul class="pagination">
+        @for (var i = 1; i <= clientes.TotalPages; i++)
+        {
+            <li class="page-item @(i == clientes.CurrentPage ? "active" : "")">
+                <a asp-controller="Cliente" asp-action="List" asp-route-currentpage="@i" class="page-link">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+
+
+<script type="text/javascript">
+    var toggle = function(source)
+    {
+        if (source.name == "ck") {
+            var checkboxes = document.getElementsByName('ck')
+            for (i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = false;
+            }
+            document.getElementsByName('select_all').checked = false;
+            source.checked = true;
+        }
+        else 
+        {
+            var checkboxes = document.getElementsByName('ck')
+            for (i = 0;i<checkboxes.length;i++)
+            {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    }
+</script>

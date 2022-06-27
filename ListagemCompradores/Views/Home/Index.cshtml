@@ -1,0 +1,32 @@
+﻿@model ListagemCompradores.ViewModels.LoginViewModel
+
+@{
+	ViewData["Registrar"] = "../Cliente/Registrar";
+	ViewData["Title"] = "Login";
+}
+
+<div class="box-parent-login">
+	<div class="well bg-white box-login">
+		<h1 class="ls-login-logo">@ViewData["Title"]</h1>
+		<h3 style="color:red">@ViewData["Message"]</h3>
+		<form asp-controller="Cliente" asp-action="Login" method="get">
+			<fieldset>
+ 
+				<div class="form-group ls-login-user">
+					 <label for="userEmail">Email</label>
+					<input asp-for="Email" class="form-control ls-login-bg-password input-lg" type="text" aria-label="Email" placeholder="Email">
+				</div>
+ 
+				<div class="form-group ls-login-password">
+					<label for="userPassword">Senha</label>
+					<input asp-for="Senha" class="form-control ls-login-bg-password input-lg" type="password" aria-label="Senha" placeholder="Senha">
+				</div>
+				<br /></>
+				<div class="col-md-12 col-sm-12 col-xs-12" style=" margin-top:5px;display:flex;justify-content: flex-end;">
+					<input type="submit" value="Entrar" class="btn btn-primary btn-lg btn-block" style="margin-right:5px;">
+					<a class="btn btn-primary btn-lg btn-block" asp-controller="Cliente" asp-action="Registrar" style="float:right;"> Registrar</a>
+				</div>
+			</fieldset>
+		</form>
+	</div>
+</div>
